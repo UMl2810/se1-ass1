@@ -76,20 +76,20 @@ public class Word {
     }
 
     public boolean isKeyword() {
-        if (this.getText().isEmpty()) {
+        String text = this.getText().toLowerCase();
+        if (text.isEmpty() || stopWords.contains(text)) {
             return false;
         }
-
-        if (stopWords.contains(this.getText().toLowerCase())) {
-            return false;
+        int i = 0;
+        boolean hasDigit = false;
+        while (i < text.length() && !hasDigit) {
+            hasDigit = Character.isDigit(text.charAt(i)) ? true : hasDigit;
+            i++;
         }
-        for (int i = 0; i < this.getText().length(); i++) {
-            if (this.getText().charAt(i) <= '9' && this.getText().charAt(i) >= '0') {
-                return false;
-            }
-        }
-        return true;
+        return !hasDigit;
     }
+
+
 
     public String getText() {
         return this.text;
