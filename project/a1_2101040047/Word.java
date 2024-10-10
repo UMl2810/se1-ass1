@@ -26,6 +26,7 @@ public class Word {
         extractSuffix(rawText, j, suffix);
         return new Word(prefix.toString(), text.toString(), suffix.toString());
     }
+
     private static int extractPrefix(String rawText, StringBuilder prefix) {
         int i = 0;
         while (i < rawText.length() && !isValidWord(rawText.charAt(i))) {
@@ -89,8 +90,6 @@ public class Word {
         return !hasDigit;
     }
 
-
-
     public String getText() {
         return this.text;
     }
@@ -104,10 +103,10 @@ public class Word {
     }
 
     public static boolean loadStopWords(String fileName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            while (reader.ready()) {
-                stopWords.add(reader.readLine());
-            }
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            br.lines()
+                    .map(String::toLowerCase)
+                    .forEach(stopWords::add);
         } catch (IOException e) {
             return false;
         }

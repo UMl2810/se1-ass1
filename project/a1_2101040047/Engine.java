@@ -2,6 +2,7 @@ package a1_2101040047;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Engine {
     private Doc[] docs;
@@ -38,11 +39,10 @@ public class Engine {
     }
 
     public String htmlResult(List<Result> results) {
-        StringBuilder html = new StringBuilder();
-        results.stream()
+        return results.stream()
                 .filter(result -> result.htmlHighlight() != null)
-                .forEach(result -> html.append(result.htmlHighlight()));
-        return html.toString();
+                .map(Result::htmlHighlight)
+                .collect(Collectors.joining());
     }
 
     public List<Result> search(Query q) {
