@@ -63,7 +63,8 @@ public class Word {
     }
 
     private static boolean onDot(char ch, int currentPos, String rawText) {
-        return ch == '.' && !Character.isDigit(rawText.charAt(currentPos - 1)) && (rawText.length() - currentPos < 3);
+        char prevChar = rawText.charAt(currentPos - 1);
+        return ch == '.' && !(prevChar >= '0' && prevChar <= '9') && (rawText.length() - currentPos < 3);
     }
 
     public static boolean isValidWord(char ch) {
