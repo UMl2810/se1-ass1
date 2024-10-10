@@ -1,9 +1,9 @@
 package a1_2101040047;
+
 import java.io.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 
 public class Word {
     private String text;
@@ -21,37 +21,53 @@ public class Word {
         StringBuilder prefix = new StringBuilder();
         StringBuilder text = new StringBuilder();
         StringBuilder suffix = new StringBuilder();
+        int i = extractPrefix(rawText, prefix);
+        int j = extractWord(rawText, i, text);
+        extractSuffix(rawText, j, suffix);
+        return new Word(prefix.toString(), text.toString(), suffix.toString());
+    }
+    private static int extractPrefix(String rawText, StringBuilder prefix) {
         int i = 0;
         while (i < rawText.length() && !isValidWord(rawText.charAt(i))) {
             prefix.append(rawText.charAt(i));
             i++;
         }
-        for (int j = i; j < rawText.length(); j++) {
-            char ch = rawText.charAt(j);
-            if (isValidWord(ch)) {
-                if (ch == ',' && j > i + 1) {
-                    break;
-                } else if (ch == '.' && (rawText.charAt(j - 1) < '0' || rawText.charAt(j - 1) > '9') && (rawText.length() - j < 3)) {
-                    break;
-                } else {
+        return i;
+    }
+
+    private static int extractWord(String rawText, int i, StringBuilder text) {
+            int j = i;
+            while (j < rawText.length()) {
+                char ch = rawText.charAt(j);
+                if (isValidWord(ch)) {
+                    if (onComma(ch, j, i) || onDot(ch, j, rawText)) {
+                        return j;
+                    }
                     text.append(ch);
+                } else {
+                    return j;
                 }
-            } else {
-                break;
+                j++;
             }
-        }
-        for (int k = i + text.length(); k < rawText.length(); k++) {
-            suffix.append(rawText.charAt(k));
+            return rawText.length();
         }
 
-        return new Word(prefix.toString(), text.toString(), suffix.toString());
+        private static void extractSuffix(String rawText, int j, StringBuilder suffix) {
+        for (int k = j; k < rawText.length(); k++) {
+            suffix.append(rawText.charAt(k));
+        }
+    }
+
+    private static boolean onComma(char ch, int currentPos, int startPos) {
+        return ch == ',' && currentPos > startPos + 1;
+    }
+
+    private static boolean onDot(char ch, int currentPos, String rawText) {
+        return ch == '.' && !Character.isDigit(rawText.charAt(currentPos - 1)) && (rawText.length() - currentPos < 3);
     }
 
     public static boolean isValidWord(char ch) {
-        if (Character.isLetter(ch) || Character.isDigit(ch)) {
-            return true;
-        }
-        return ch == ',' || ch == '.' || ch == '-';
+        return (ch <= 'z' && ch >= 'a') || (ch <= 'Z' && ch >= 'A') || (ch == ',') || (ch == '.') || (ch == '-') || (ch <= '9' && ch >= '0');
     }
 
     public boolean isKeyword() {
@@ -62,7 +78,6 @@ public class Word {
         if (stopWords.contains(this.getText().toLowerCase())) {
             return false;
         }
-
         for (int i = 0; i < this.getText().length(); i++) {
             if (this.getText().charAt(i) <= '9' && this.getText().charAt(i) >= '0') {
                 return false;

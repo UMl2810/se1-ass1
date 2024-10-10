@@ -28,6 +28,14 @@ public class Result implements Comparable<Result> {
                 .sum();
     }
 
+//    public double getAverageFirstIndex() {
+//        float sum1stIndex = 0.0F;
+//        for (Match match : matches) {
+//            sum1stIndex += match.getFirstIndex();
+//        }
+//        return sum1stIndex / matches.size();
+//    }
+
     public String htmlHighlight() {
         StringBuilder highlightedTitle = new StringBuilder();
         StringBuilder highlightedBody = new StringBuilder();
