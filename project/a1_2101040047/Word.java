@@ -67,7 +67,13 @@ public class Word {
     }
 
     public static boolean isValidWord(char ch) {
-        return (ch <= 'z' && ch >= 'a') || (ch <= 'Z' && ch >= 'A') || (ch == ',') || (ch == '.') || (ch == '-') || (ch <= '9' && ch >= '0');
+        return Character.isLowerCase(ch) ||
+                Character.isUpperCase(ch) ||
+                Character.isDigit(ch) ||
+                ch == ',' ||
+                ch == '.' ||
+                ch == '-'
+                ;
     }
 
     public boolean isKeyword() {

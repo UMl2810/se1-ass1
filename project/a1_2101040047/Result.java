@@ -43,30 +43,34 @@ public class Result implements Comparable<Result> {
                 .stream()
                 .map(Match::getWord)
                 .collect(Collectors.toList());
+
         for (int i = 0; i < d.getTitleLength(); i++) {
             Word wTitle = d.getTitle().get(i);
-            if (wordsInMatches.contains(wTitle)) {
-                highlightedTitle.append("<u>").append(wTitle.getText()).append("</u>").append(wTitle.getSuffix());
-            } else {
-                highlightedTitle.append(wTitle.getPrefix()).append(wTitle.getText()).append(wTitle.getSuffix());
-            }
+            highlightedTitle.append(
+                    wordsInMatches.contains(wTitle)
+                            ? "<u>" + wTitle.getText() + "</u>" + wTitle.getSuffix()
+                            : wTitle.getPrefix() + wTitle.getText() + wTitle.getSuffix()
+            );
             if (i < d.getTitleLength() - 1) {
                 highlightedTitle.append(" ");
             }
         }
+
         for (int j = 0; j < d.getBodyLength(); j++) {
             Word wBody = d.getBody().get(j);
-            if (wordsInMatches.contains(wBody)) {
-                highlightedBody.append("<b>").append(wBody.getText()).append("</b>").append(wBody.getSuffix());
-            } else {
-                highlightedBody.append(wBody.getPrefix()).append(wBody.getText()).append(wBody.getSuffix());
-            }
+            highlightedBody.append(
+                    wordsInMatches.contains(wBody)
+                            ? "<b>" + wBody.getText() + "</b>" + wBody.getSuffix()
+                            : wBody.getPrefix() + wBody.getText() + wBody.getSuffix()
+            );
             if (j < d.getBodyLength() - 1) {
                 highlightedBody.append(" ");
             }
         }
+
         return "<h3>" + highlightedTitle + "</h3>" + "<p>" + highlightedBody + "</p>";
     }
+
 
     @Override
     public int compareTo(Result o) {
