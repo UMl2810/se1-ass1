@@ -58,6 +58,10 @@ public class Word {
         }
     }
 
+    public static boolean isValidWord(char ch) {
+        return (ch <= 'z' && ch >= 'a') || (ch <= 'Z' && ch >= 'A') || (ch <= '9' && ch >= '0') || (ch == ',') || (ch == '.') || (ch == '-') ;
+    }
+
     private static boolean onComma(char ch, int currentPos, int startPos) {
         return ch == ',' && currentPos > startPos + 1;
     }
@@ -65,10 +69,6 @@ public class Word {
     private static boolean onDot(char ch, int currentPos, String rawText) {
         char prevChar = rawText.charAt(currentPos - 1);
         return ch == '.' && !(prevChar >= '0' && prevChar <= '9') && (rawText.length() - currentPos < 3);
-    }
-
-    public static boolean isValidWord(char ch) {
-        return (ch <= 'z' && ch >= 'a') || (ch <= 'Z' && ch >= 'A') || (ch == ',') || (ch == '.') || (ch == '-') || (ch <= '9' && ch >= '0');
     }
 
     public boolean isKeyword() {
