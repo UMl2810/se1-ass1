@@ -72,8 +72,7 @@ public class Word {
                 Character.isDigit(ch) ||
                 ch == ',' ||
                 ch == '.' ||
-                ch == '-'
-                ;
+                ch == '-';
     }
 
     public boolean isKeyword() {
